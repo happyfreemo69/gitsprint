@@ -1,0 +1,10 @@
+{
+    "name": "gitsprint",
+    "version": "1.0.0",
+    "description": "list commits aggregated by ticket number",
+    "author": "mpech",
+    "dependencies": {
+        "optimist": "0.6.1"
+    },
+    "license": "MIT"
+}
