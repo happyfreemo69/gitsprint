@@ -3,6 +3,7 @@ export GITSPRINT_RC=~/.gitsprintrc
 example of .gitsprintrc
 
     {
+        "pull":true,
         "folders":[
             {
                 "path": "/home/mpech/workspace/trad-cli"
@@ -34,7 +35,11 @@ example of output
 usage:
 
     git clone git@github.com:happyfreemo69/gitsprint.git
-    ./bin/gitsprint.js -s 171201 [-b 171211] [-r mpech]
+    ./bin/gitsprint.js -s 171201 [-b 171211] [-r mpech][-p 0]
+
+    May ignore repo not updated via 
+    
+    ./bin/gitsprint.js |grep -v '0 tickets'
 
 TODO:
     
