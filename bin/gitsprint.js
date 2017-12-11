@@ -18,6 +18,11 @@ var optimist = require('optimist')
         describe:'aammjj',
         default:'now'
     })
+    .options('p', {
+        alias: 'pull',
+        type:'string',
+        describe:'pull before making the diff. 0 to disable, 1 to enable'
+    })
     .options('f', {
         alias: 'file',
         type:'string',
@@ -50,21 +55,26 @@ function getConf(){
         }
         return fs.readFile(argv.file, function(err, data){
             if(err){
-                return resolve(Object.assign({}, defconf));
+                return resolve(defconf);
             }
             try{
                 var o = JSON.parse(fs.readFileSync(argv.file).toString());
-                return resolve(Object.assign({}, defconf, o));
+                return resolve(o);
             }catch(e){
                 return reject(e);
             }
         })  
+    }).then(conf=>{
+        if(argv.hasOwnProperty('pull')){
+            argv.pull = argv.pull != '0';
+        }
+        return Object.assign({}, defconf, conf, argv);
     })
 }
 return getConf().then(conf=>{
     return conf.folders.reduce((acc,x)=>{
         return acc.then(_=>{
-            var runner = new Runner({since: argv.since, before: argv.before, path: x.path}, {regex: argv.regex, enable_softTag: conf.enable_softTag});
+            var runner = new Runner({since: argv.since, before: argv.before, path: x.path}, {pull: conf.pull, regex: argv.regex, enable_softTag: conf.enable_softTag});
             return runner.run();
         })
     }, Promise.resolve())
